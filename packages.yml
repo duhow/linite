@@ -1,0 +1,84 @@
+- name: google-chrome
+  version: latest
+  package: "https://dl.google.com/linux/direct/google-chrome-stable_current_{ARCH}.deb"
+  check_version: |
+    google-chrome --version
+
+- name: slack
+  version: 4.29.149
+  package: "https://downloads.slack-edge.com/releases/linux/{VERSION}/prod/x64/slack-desktop-{VERSION}-{ARCH}.deb"
+  check_version: |
+    slack --version
+
+- name: az-cli
+  version: latest
+  provides: az
+  check_version: |
+    az version
+  install: |
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+  post_install: |
+    sudo rm -f /etc/apt/sources.list.d/azure-cli.list
+  requires: >
+    ca-certificates curl apt-transport-https lsb-release gnupg
+
+- name: dni-electronico
+  version: 1.6.8
+  package: "https://www.dnielectronico.es/descargas/distribuciones_linux/libpkcs11-dnie_{VERSION}_{ARCH}.deb"
+  provides: ""
+
+- name: AutoFirma
+  version: 1.7.1
+  package: "https://estaticos.redsara.es/comunes/autofirma/1/7/1/AutoFirma_Linux.zip"
+
+- name: telegram-desktop
+  version: 4.6.2
+  package: "https://updates.tdesktop.com/tlinux/tsetup.{VERSION}.tar.xz"
+  install: |
+    sudo install Telegram/Telegram /usr/local/bin/telegram-desktop
+
+- name: binance
+  version: latest
+  package: "https://download.binance.com/electron-desktop/linux/production/binance-{ARCH}-linux.deb"
+
+- name: docker-buildx
+  version: 0.9.1
+  binary:
+    download: "https://github.com/docker/buildx/releases/download/v{VERSION}/buildx-v{VERSION}.linux-{ARCH}"
+    name: docker-buildx
+    location: "~/.docker/cli-plugins"
+  install: |
+    mkdir -p ~/.docker/cli-plugins
+  check_version: |
+    docker buildx version
+  provides: ""
+  requires: docker-ce
+
+- name: docker-compose
+  version: 2.14.1
+  arch:
+    amd64: x86_64
+  binary:
+    download: "https://github.com/docker/compose/releases/download/v{VERSION}/docker-compose-linux-{ARCH}"
+    name: docker-compose
+    location: /usr/local/bin
+  check_version: |
+    docker-compose --version
+  requires: docker-ce
+
+- name: kubectl
+  version: 1.26.0
+  binary:
+    download: "https://dl.k8s.io/release/v{VERSION}/bin/linux/{ARCH}/kubectl"
+    name: kubectl
+    location: /usr/local/bin
+  check_version: |
+    kubectl version --client
+
+- name: helm
+  version: 3.11.1
+  package: "https://get.helm.sh/helm-v{VERSION}-linux-{ARCH}.tar.gz"
+  install: |
+    sudo install linux-${ARCH}/helm /usr/local/bin
+  check_version: |
+    helm version --short
