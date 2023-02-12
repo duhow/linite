@@ -1,6 +1,6 @@
 import click
 import yaml
-from package import Package
+from linite.package import Package
 
 @click.group()
 def cli():
